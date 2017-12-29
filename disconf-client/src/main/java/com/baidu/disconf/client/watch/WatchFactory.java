@@ -1,14 +1,13 @@
 package com.baidu.disconf.client.watch;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.baidu.disconf.client.config.ConfigMgr;
 import com.baidu.disconf.client.config.DisClientConfig;
 import com.baidu.disconf.client.config.DisClientSysConfig;
 import com.baidu.disconf.client.fetcher.FetcherMgr;
 import com.baidu.disconf.client.watch.impl.WatchMgrImpl;
 import com.baidu.disconf.core.common.path.DisconfWebPathMgr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 监控器 实例 工厂
@@ -23,6 +22,8 @@ public class WatchFactory {
     private static String hosts = null;
     private static String zooPrefix = null;
     private static final Object hostsSync = new Object();
+
+    private static WatchMgr watchMgr = null;
 
     /**
      * @throws Exception
@@ -49,7 +50,7 @@ public class WatchFactory {
                                                                                                              ()
                                                                                                         .CONF_SERVER_ZOO_ACTION));
 
-                        WatchMgr watchMgr = new WatchMgrImpl();
+                        watchMgr = new WatchMgrImpl();
                         watchMgr.init(hosts, zooPrefix, DisClientConfig.getInstance().DEBUG);
 
                         return watchMgr;
@@ -63,6 +64,6 @@ public class WatchFactory {
             }
         }
 
-        return null;
+        return watchMgr;
     }
 }
